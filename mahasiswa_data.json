@@ -1,0 +1,57 @@
+[
+    {
+        "nim": 5,
+        "nama": "yoga",
+        "jurusan": "DKV"
+    },
+    {
+        "nim": 6,
+        "nama": "amiga",
+        "jurusan": "Perhotelan"
+    },
+    {
+        "nim": 30,
+        "nama": "Eka Putri",
+        "jurusan": "Tata Boga"
+    },
+    {
+        "nim": 45,
+        "nama": "damar",
+        "jurusan": "DKV"
+    },
+    {
+        "nim": 70,
+        "nama": "Dewi Purnama",
+        "jurusan": "Desain Grafis"
+    },
+    {
+        "nim": 80,
+        "nama": "Iswara",
+        "jurusan": "Teknik Informatika"
+    },
+    {
+        "nim": 89,
+        "nama": "dias",
+        "jurusan": "DKV"
+    },
+    {
+        "nim": 100,
+        "nama": "yani",
+        "jurusan": "akuntansi"
+    },
+    {
+        "nim": 101,
+        "nama": "Budi Santoso",
+        "jurusan": "Teknik Informatika"
+    },
+    {
+        "nim": 120,
+        "nama": "Citra Lestari",
+        "jurusan": "Ilmu Komunikasi"
+    },
+    {
+        "nim": 240,
+        "nama": "Agung Dipa",
+        "jurusan": "Teknik Informatika"
+    }
+]

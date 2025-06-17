@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Mahasiswa</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 900px; margin: auto; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0056b3; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; margin-bottom: 20px; }
+        form { margin-bottom: 25px; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #fafafa; }
+        form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        form input[type="text"], 
+        form input[type="number"],
+        form input[type="search"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding in width */
+        }
+        form button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        form button:hover { background-color: #218838; }
+
+        .search-form { display: flex; gap: 10px; }
+        .search-form input { flex-grow: 1; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        th, td { border: 1px solid #e0e0e0; padding: 12px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        td { background-color: #fdfdfd; }
+        tr:nth-child(even) td { background-color: #f0f8ff; } /* Light blue for even rows */
+        
+        .action-buttons button {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .edit-btn { background-color: #ffc107; color: #333; border: none; }
+        .edit-btn:hover { background-color: #e0a800; }
+        .delete-btn { background-color: #dc3545; color: white; border: none; }
+        .delete-btn:hover { background-color: #c82333; }
+
+        .flash-message {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .flash-message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .flash-message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .flash-message.info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .flash-message.warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+
+        /* CSS untuk Tree View */
+        .tree-view, .tree-view ul {
+            list-style-type: none;
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .tree-view li {
+            position: relative;
+            margin-bottom: 5px;
+            padding: 5px 0 0 15px;
+        }
+
+        .tree-view li:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            width: 10px;
+            height: 100%;
+        }
+
+        .tree-view li:last-child:before {
+            height: 15px; /* Sesuaikan garis di elemen terakhir */
+        }
+
+        .tree-view li:not(:last-child):after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 1px solid #ccc;
+            width: 0;
+            height: 100%; /* Garis vertikal untuk non-last-child */
+        }
+
+        .tree-view li .node-data {
+            background-color: #e6f7ff; /* Warna latar belakang node */
+            padding: 3px 8px;
+            border-radius: 3px;
+            border: 1px solid #a0cfff;
+            display: inline-block;
+        }
+
+        .tree-view .empty-node {
+            color: #aaa;
+            font-style: italic;
+            margin-left: 10px;
+        }
+
+        /* CSS untuk Filter & Urutkan Form */
+        .filter-sort-form {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #fcfcfc;
+            margin-bottom: 20px;
+        }
+        .filter-sort-form label {
+            margin-bottom: 0;
+            font-weight: normal;
+            color: #555;
+        }
+        .filter-sort-form select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sistem Manajemen Mahasiswa (BST)</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <h2>Tambah Mahasiswa</h2>
+        <form action="/add" method="post">
+            <label for="nim">NIM:</label>
+            <input type="number" id="nim" name="nim" required min="1"><br>
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" name="nama" required><br>
+            <label for="jurusan">Jurusan:</label>
+            <input type="text" id="jurusan" name="jurusan" required><br>
+            <button type="submit">Tambah Mahasiswa</button>
+        </form>
+
+        <h2>Cari Mahasiswa</h2>
+        <form action="/search" method="get" class="search-form">
+            <input type="search" id="search_nim" name="nim" placeholder="Masukkan NIM yang dicari..." required>
+            <button type="submit">Cari</button>
+        </form>
+
+        <h2>Filter & Urutkan Daftar</h2>
+        <form action="/" method="get" class="filter-sort-form">
+            <label for="sort_by">Urutkan Berdasarkan:</label>
+            <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+                <option value="nim" {% if current_sort_by == 'nim' %}selected{% endif %}>NIM</option>
+                <option value="nama" {% if current_sort_by == 'nama' %}selected{% endif %}>Nama</option>
+                <option value="jurusan" {% if current_sort_by == 'jurusan' %}selected{% endif %}>Jurusan</option>
+            </select>
+
+            <label for="sort_order" style="margin-left: 20px;">Urutan:</label>
+            <select name="sort_order" id="sort_order" onchange="this.form.submit()">
+                <option value="asc" {% if current_sort_order == 'asc' %}selected{% endif %}>Ascending (A-Z, 0-9)</option>
+                <option value="desc" {% if current_sort_order == 'desc' %}selected{% endif %}>Descending (Z-A, 9-0)</option>
+            </select>
+        </form>
+
+        <h2>Daftar Mahasiswa</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>Jurusan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if mahasiswa_list %}
+                    {% for mhs in mahasiswa_list %}
+                    <tr>
+                        <td>{{ mhs.nim }}</td>
+                        <td>{{ mhs.nama }}</td>
+                        <td>{{ mhs.jurusan }}</td>
+                        <td class="action-buttons">
+                            <a href="{{ url_for('edit_mahasiswa_form', nim=mhs.nim) }}"><button class="edit-btn">Edit</button></a>
+                            <a href="{{ url_for('delete_mahasiswa', nim=mhs.nim) }}" onclick="return confirm('Apakah Anda yakin ingin menghapus mahasiswa ini?');"><button class="delete-btn">Hapus</button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4">Belum ada data mahasiswa.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <h2>Visualisasi Struktur Tree Mahasiswa</h2>
+        <div id="treeVisualization">
+            {{ tree_html | safe }}
+        </div>
+    </div>
+</body>
+</html>
