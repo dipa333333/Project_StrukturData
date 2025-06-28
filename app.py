@@ -1,3 +1,28 @@
+#=========================================================================================================================================
+#Nama Anggota Kelompok Yang Membuat:
+'''
+1. Anak Agung Putu Jaya Dipa (2401010533)
+2. Kadek Gede Damaryana      (2401010089)
+3. Michael Gunawan Pasaribu  (2401010700)
+'''
+
+#Tentang Program:
+'''
+Program ini merupakan sebuah sistem manajemen data mahasiswa yang kita kembangkan menggunakan Python dengan framework Flask untuk sisi backend, dan HTML serta CSS untuk antarmuka pengguna di sisi frontend. Aplikasi ini memiliki berbagai fitur, mulai dari menambahkan data mahasiswa baru, mencari mahasiswa berdasarkan NIM, hingga mengubah dan menghapus data yang sudah ada.
+Selain itu, program ini juga dilengkapi dengan fungsionalitas untuk mengurutkan daftar mahasiswa berdasarkan kriteria seperti NIM, Nama, atau Jurusan, dan menampilkan visualisasi struktur data tree secara real-time. Seluruh data mahasiswa disimpan secara permanen di dalam file mahasiswa_data.json, yang secara otomatis diperbarui setiap kali ada perubahan, sehingga data tidak hilang saat aplikasi dimatikan.
+
+Yang paling penting, program ini menggunakan struktur data AVL Tree yang secara otomatis menyeimbangkan dirinya untuk memastikan setiap operasi (penambahan, pencarian, penghapusan) dapat berjalan dengan sangat cepat dan efisien, bahkan untuk data dalam jumlah besar. Ini menjadikan sistem tidak hanya fungsional, tetapi juga memiliki performa yang optimal.
+'''
+
+#Cara Menjalankan Program:
+'''
+1. Siapkan File: Pastikan semua file (app.py, index.html, edit.html) berada dalam satu folder.
+2. Instal Flask jika belum terpasang:Buka terminal atau command prompt, lalu jalankan(pip install Flask)
+3. Jalankan Aplikasi: Di terminal yang sama, eksekusi file app.py ini
+4. Akses di Browser: Buka browser dan kunjungi alamat http://127.0.0.1:5000/ untuk mengakses aplikasinya.
+'''
+#=========================================================================================================================================
+
 import json
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
@@ -45,7 +70,7 @@ class Node:
         self.left = new_root.right
         new_root.right = self
         
-        # Penting: Perbarui tinggi node lama (self) terlebih dahulu, baru root baru
+        # Perbarui tinggi node lama (self) terlebih dahulu, baru root baru
         self.update_height()
         new_root.update_height()
         return new_root
@@ -55,7 +80,7 @@ class Node:
         self.right = new_root.left
         new_root.left = self
 
-        # Penting: Perbarui tinggi node lama (self) terlebih dahulu, baru root baru
+        # Perbarui tinggi node lama (self) terlebih dahulu, baru root baru
         self.update_height()
         new_root.update_height()
         return new_root
